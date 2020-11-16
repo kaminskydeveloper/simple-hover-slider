@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>Hover slider</title>
+  </head>
+  <body>
+    <h1>Hover slider</h1>
+    <div class="progress">
+      <div class="progress-bar"></div>
+    </div>
+    <div class="image__wrapper">
+      <div class="image image-1 visible"></div>
+      <div class="image image-2"></div>
+      <div class="image image-3"></div>
+    </div>
+
+    <script>
+      const imageWrapper = document.querySelector('.image__wrapper');
+      const progressBar = document.querySelector('.progress-bar');
+
+      let activeSlide = 0;
+      let timer = null;
+      var i = 0;
+      var width = 1;
+
+      progressBar.style.width = width + '%';
+
+      const nextSlide = () => {
+        if (activeSlide === imageWrapper.children.length - 1) {
+          let previousSlide = activeSlide;
+          activeSlide = 0;
+          imageWrapper.children[previousSlide].classList.remove('visible');
+          imageWrapper.children[activeSlide].classList.add('visible');
+        } else {
+          let previousSlide = activeSlide;
+          imageWrapper.children[previousSlide].classList.remove('visible');
+          activeSlide++;
+          imageWrapper.children[activeSlide].classList.add('visible');
+        }
+      };
+
+      imageWrapper.addEventListener('mouseenter', () => {
+        timer = setInterval(() => {
+          i = 1;
+          var elem = document.getElementById('myBar');
+          var width = 1;
+          var id = setInterval(frame, 10);
+          function frame() {
+            if (width >= 100) {
+              clearInterval(id);
+              i = 0;
+            } else {
+              width++;
+              progressBar.style.width = width + '%';
+            }
+          }
+          nextSlide();
+        }, 2000);
+      });
+
+      imageWrapper.addEventListener('mouseleave', () => {
+        clearInterval(timer);
+      });
+    </script>
+  </body>
+</html>
