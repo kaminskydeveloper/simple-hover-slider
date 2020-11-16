@@ -51,11 +51,13 @@
       let activeSlide = [];
       let timer = [];
       let width = [];
+      let progress = [];
 
       for (let i = 0; i <= imageWrapper.length - 1; i++) {
         activeSlide[i] = 0;
         timer[i] = null;
         width[i] = 1;
+        progress[i] = null;
       }
 
       const nextSlide = (slider) => {
@@ -82,10 +84,10 @@
 
       const progressBarAnimation = (bar) => {
         let width = 1;
-        let id = setInterval(frame, 10);
+        progress = setInterval(frame, 10);
         function frame() {
           if (width >= 100) {
-            clearInterval(id);
+            clearInterval(progress);
           } else {
             width++;
             progressBar[bar].style.width = width + '%';
@@ -98,20 +100,20 @@
           timer[i] = setInterval(() => {
             progressBarAnimation(i);
             nextSlide(i);
-          }, 2000);
+          }, 1500);
         });
 
         imageWrapper[i].addEventListener('mouseleave', () => {
           width[i] = 1;
           activeSlide[i] = 0;
-          progressBar[i].style.width = width[i] + '%';
+          progressBar[i].style.width = '1%';
 
           for (let item of imageWrapper[i].children) {
             item.classList.remove('visible');
           }
           imageWrapper[i].children[activeSlide[i]].classList.add('visible');
+          clearInterval(progress);
           clearInterval(timer[i]);
-          console.log(timer);
         });
       }
     </script>
