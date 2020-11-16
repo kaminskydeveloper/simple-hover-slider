@@ -8,62 +8,113 @@
   </head>
   <body>
     <h1>Hover slider</h1>
-    <div class="progress">
-      <div class="progress-bar"></div>
+    <div class="slider slider-1">
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="image__wrapper">
+        <div class="image image-1 visible"></div>
+        <div class="image image-2"></div>
+        <div class="image image-3"></div>
+        <div class="image image-4"></div>
+      </div>
     </div>
-    <div class="image__wrapper">
-      <div class="image image-1 visible"></div>
-      <div class="image image-2"></div>
-      <div class="image image-3"></div>
+
+    <div class="slider slider-2">
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="image__wrapper">
+        <div class="image image-1 visible"></div>
+        <div class="image image-2"></div>
+        <div class="image image-3"></div>
+        <div class="image image-4"></div>
+      </div>
+    </div>
+
+    <div class="slider slider-3">
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="image__wrapper">
+        <div class="image image-1 visible"></div>
+        <div class="image image-2"></div>
+        <div class="image image-3"></div>
+        <div class="image image-4"></div>
+      </div>
     </div>
 
     <script>
-      const imageWrapper = document.querySelector('.image__wrapper');
-      const progressBar = document.querySelector('.progress-bar');
+      const imageWrapper = document.querySelectorAll('.image__wrapper');
+      const progressBar = document.querySelectorAll('.progress-bar');
 
-      let activeSlide = 0;
-      let timer = null;
-      var i = 0;
-      var width = 1;
+      let activeSlide = [];
+      let timer = [];
+      let width = [];
 
-      progressBar.style.width = width + '%';
+      for (let i = 0; i <= imageWrapper.length - 1; i++) {
+        activeSlide[i] = 0;
+        timer[i] = null;
+        width[i] = 1;
+      }
 
-      const nextSlide = () => {
-        if (activeSlide === imageWrapper.children.length - 1) {
-          let previousSlide = activeSlide;
-          activeSlide = 0;
-          imageWrapper.children[previousSlide].classList.remove('visible');
-          imageWrapper.children[activeSlide].classList.add('visible');
+      const nextSlide = (slider) => {
+        if (activeSlide[slider] === imageWrapper[slider].children.length - 1) {
+          let previousSlide = activeSlide[slider];
+          activeSlide[slider] = 0;
+          imageWrapper[slider].children[previousSlide].classList.remove(
+            'visible'
+          );
+          imageWrapper[slider].children[activeSlide[slider]].classList.add(
+            'visible'
+          );
         } else {
-          let previousSlide = activeSlide;
-          imageWrapper.children[previousSlide].classList.remove('visible');
-          activeSlide++;
-          imageWrapper.children[activeSlide].classList.add('visible');
+          let previousSlide = activeSlide[slider];
+          imageWrapper[slider].children[previousSlide].classList.remove(
+            'visible'
+          );
+          activeSlide[slider]++;
+          imageWrapper[slider].children[activeSlide[slider]].classList.add(
+            'visible'
+          );
         }
       };
 
-      imageWrapper.addEventListener('mouseenter', () => {
-        timer = setInterval(() => {
-          i = 1;
-          var elem = document.getElementById('myBar');
-          var width = 1;
-          var id = setInterval(frame, 10);
-          function frame() {
-            if (width >= 100) {
-              clearInterval(id);
-              i = 0;
-            } else {
-              width++;
-              progressBar.style.width = width + '%';
-            }
+      const progressBarAnimation = (bar) => {
+        let width = 1;
+        let id = setInterval(frame, 10);
+        function frame() {
+          if (width >= 100) {
+            clearInterval(id);
+          } else {
+            width++;
+            progressBar[bar].style.width = width + '%';
           }
-          nextSlide();
-        }, 2000);
-      });
+        }
+      };
 
-      imageWrapper.addEventListener('mouseleave', () => {
-        clearInterval(timer);
-      });
+      for (let i = 0; i <= imageWrapper.length - 1; i++) {
+        imageWrapper[i].addEventListener('mouseenter', () => {
+          timer[i] = setInterval(() => {
+            progressBarAnimation(i);
+            nextSlide(i);
+          }, 2000);
+        });
+
+        imageWrapper[i].addEventListener('mouseleave', () => {
+          width[i] = 1;
+          activeSlide[i] = 0;
+          progressBar[i].style.width = width[i] + '%';
+
+          for (let item of imageWrapper[i].children) {
+            item.classList.remove('visible');
+          }
+          imageWrapper[i].children[activeSlide[i]].classList.add('visible');
+          clearInterval(timer[i]);
+          console.log(timer);
+        });
+      }
     </script>
+    <script></script>
   </body>
 </html>

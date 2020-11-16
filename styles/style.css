@@ -48,6 +48,10 @@
   background: yellow;
 }
 
+.image-4 {
+  background: green;
+}
+
 .visible {
   visibility: visible;
   opacity: 1;
